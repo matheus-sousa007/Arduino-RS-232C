@@ -6,11 +6,9 @@
  - [Matheus Ventura de Sousa - 11345541](https://github.com/matheus-sousa007/)
  - [Pedro Lucas de Moliner de Castro - 11795784](https://github.com/pedrolmcastro)
 
-O projeto baseia-se em fazer dois arduinos se comunicarem usando um protocolo em comum. O protocolo feito pelo grupo é customizado que tem como base o **RS-232C** no qual é usado na transmissão de caracteres na forma serial e assíncrona.
+O projeto baseia-se em fazer dois arduinos se comunicarem usando um protocolo em comum. O protocolo feito pelo grupo é customizado e tem como base o **RS-232C**, modficicada para transmitir de forma serial e síncrona.
 
-A modificação consiste em adicionar um timer tanto para o transmissor e o receptor para permitir um fluxo síncrono dos dados.
-
-Para a transmissão do caractere, foi utilizado um bit de paridade para detectar possíveis erros de transmissão. O grupo adotou a paridade ímpar, assim, o bit de paridade estará ativo caso a soma de todos os bits ativos do caractere somarem um número par. Caso contrário, o bit de paridade permanecerá desativado.
+Para a transmissão do caractere, foi utilizado um bit de paridade para detectar possíveis erros de transmissão. O grupo adotou a paridade ímpar; assim, o bit de paridade estará ativo caso a soma de todos os bits ativos do caractere somarem um número par. Caso contrário, o bit de paridade permanecerá desativado.
 
 ## Ferramentas utilizadas no projeto
 
@@ -33,6 +31,8 @@ Ao verificar que o RTS do emissor está ativo, o receptor ativará o CTS o mais 
 
 Quando os dois sinais são ativados, o timer começa a contar visto que a transmissão de dados se iniciará por meio do canal de dados. Ao terminar a transmissão, o emissor desativa a flag RTS para sinalizar que não há mais dados a serem enviados no momento. Assim, o receptor desativa o CTS para avisar que não está mais preparado para receber dados.
 
+![](./images/sinais.png)
+
 A comunicação entre os arduinos é feita seguindo o esquema abaixo.
 
 ![](./images/esquema.png)
@@ -40,8 +40,6 @@ A comunicação entre os arduinos é feita seguindo o esquema abaixo.
 ### Sincronização do clock
 
 Para a inicialização do clock do receptor foi utilizado um delay de 1 HALF_BAUD para manter o seu próprio sinal de clock entre os sinais do emissor garantindo assim a transmissão correta dos dados. Além disso, o grupo decidiu utilizar um clock a mais no receptor para garantir a recepção de todos os dados antes de baixar o sinal do RTS. Como a nossa unidade de dado do protocolo é um caractere, se a sincronia for perdida em algum momento, na próxima transmissão da UDP, a sincronia do clock pode ser recuperada.
-
-![](./images/sinais.png)
 
 ### Formatação da Unidade de dados do protocolo.
 
