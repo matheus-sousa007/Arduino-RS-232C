@@ -6,7 +6,7 @@
  - [Matheus Ventura de Sousa - 11345541](https://github.com/matheus-sousa007/)
  - [Pedro Lucas de Moliner de Castro - 11795784](https://github.com/pedrolmcastro)
 
-> Este projeto está disponível no GitHub por meio (deste link)[https://github.com/matheus-sousa007/Arduino-RS-232C/].
+> Este projeto está disponível no GitHub por meio [deste link](https://github.com/matheus-sousa007/Arduino-RS-232C/).
 
 O projeto baseia-se em fazer dois arduinos se comunicarem usando um protocolo em comum. O protocolo feito pelo grupo é customizado e tem como base o **RS-232C**, modficicada para transmitir de forma serial e síncrona.
 
