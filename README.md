@@ -1,36 +1,30 @@
 # Arduino Transmission Data Protocol
 
-### Disciplina: SCC0142 - Redes de Computadores
+**Disciplina: SCC0142 - Redes de Computadores**
 
-## Autores
  - [Gustavo Henrique Brunelli - 11801053](https://github.com/GBrunelli)
  - [Matheus Ventura de Sousa - 11345541](https://github.com/matheus-sousa007/)
  - [Pedro Lucas de Moliner de Castro - 11795784](https://github.com/pedrolmcastro)
 
-## Ferramentas utilizadas no projeto
-
-Para o desenvolvimento do projeto, foi utilizada a linguagem **C++ 11** dentro das ferramentas de desenvolvimento Arduino IDE e Tinkercad Circuits para a plataforma Arduino UNO R3.
-
-## Compilação e Execução
-
-Caso possua 2 arduinos para testar, basta apenas baixar o repositório com o comando abaixo e abrir os arquivos `emissor.ino` e `receptor.ino` dentro da IDE do Arduino.
-```
-git clone https://github.com/matheus-sousa007/Arduino-RS-232C.git
-```
-
-Para a configuração dos arduinos,serão necessários 3 jumpers para conectar as portas I/O digitais 11, 12 e 13 de cada arduino. Com isso, basta apenas alimentá-lo com o cabo USB.
-
-Após a abertura dos arquivos, basta apenas configurar as respectivas portas dos arduinos e carregar o sketch em `Sketch -> Carregar` em cada programa aberto.
-
-Caso não possua os dois arduinos, poderá utilizar [este Tinkercad](https://www.tinkercad.com/things/2a1NkF46jcS?sharecode=aAZjLkvQorBfngIxJZ01mImUlqpqjhRwDdd5XMdHzJM). Para executar o projeto, basta apenas clicar em `Iniciar Simulação`.
-
-## Descrição do Projeto
-
-O projeto baseia-se em fazer dois arduinos se comunicarem usando um protocolo em comum. O protocolo utilizado foi o **RS-232C** com modificações ja que ele é usado na transmissão de caracteres na forma serial e assíncrona.
+O projeto baseia-se em fazer dois arduinos se comunicarem usando um protocolo em comum. O protocolo feito pelo grupo é customizado que tem como base o **RS-232C** no qual é usado na transmissão de caracteres na forma serial e assíncrona.
 
 A modificação consiste em adicionar um timer tanto para o transmissor e o receptor para permitir um fluxo síncrono dos dados.
 
 Para a transmissão do caractere, foi utilizado um bit de paridade para detectar possíveis erros de transmissão. O grupo adotou a paridade ímpar, assim, o bit de paridade estará ativo caso a soma de todos os bits ativos do caractere somarem um número par. Caso contrário, o bit de paridade permanecerá desativado.
+
+## Ferramentas utilizadas no projeto
+
+Para o desenvolvimento do projeto, foi utilizada a linguagem **C++ 11** dentro das ferramentas de desenvolvimento **Arduino IDE** e **Tinkercad Circuits** para a plataforma Arduino UNO R3.
+
+## Compilação e execução
+
+Caso possua 2 arduinos 3 jumpers para conectar as portas I/O digitais 11, 12 e 13 de cada arduino e dois cabos de alimentação USB, basta baixar o repositório com o comando abaixo e abrir os arquivos `Emissor/emissor.ino` e `Receptor/receptor.ino` dentro da IDE do Arduino.
+
+```
+git clone https://github.com/matheus-sousa007/Arduino-RS-232C.git
+```
+
+Após a abertura dos arquivos, configure as respectivas portas dos arduinos e carregue o sketch em `Sketch -> Carregar` em cada programa aberto. Caso não possua os dois arduinos, poderá utilizar [este Tinkercad](https://www.tinkercad.com/things/2a1NkF46jcS?sharecode=aAZjLkvQorBfngIxJZ01mImUlqpqjhRwDdd5XMdHzJM) e executar o projeto clicando em `Iniciar Simulação`.
 
 ### Comunicação entre os arduinos
 
@@ -42,6 +36,16 @@ Quando os dois sinais são ativados, o timer começa a contar visto que a transm
 A comunicação entre os arduinos é feita seguindo o esquema abaixo.
 
 ![](./images/esquema.png)
+
+### Sincronização do clock
+
+Para a inicialização do clock do receptor foi utilizado um delay de 1 HALF_BAUD para manter o seu próprio sinal de clock entre os sinais do emissor garantindo assim a transmissão correta dos dados. Além disso, o grupo decidiu utilizar um clock a mais no receptor para garantir a recepção de todos os dados antes de baixar o sinal do RTS. Como a nossa unidade de dado do protocolo é um caractere, se a sincronia for perdida em algum momento, na próxima transmissão da UDP, a sincronia do clock pode ser recuperada.
+
+![](./images/sinais.png)
+
+### Formatação da Unidade de dados do protocolo.
+
+Por convenção adotada pelo grupo visando a facilidade de implementação visto que só é necessário fazer um bitwise and com 0b1111111 (127 em decimal) no dado recebido para eliminar o bit de paridade da informação final, o formato da unidade de dados do protocolo a serem transmitidos começa pelo bit de paridade seguido pelo bit mais significativo do caractere e indo até o bit menos significativo. 
 
 ## Conclusão
 
